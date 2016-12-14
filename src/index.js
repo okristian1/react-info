@@ -9,7 +9,7 @@ function handleTime(unix) {
   return newtime
 }
 
-class ProductRow extends React.Component {
+class MeetingRow extends React.Component {
   render() {
     this.props.meeting.StartDateTime = handleTime(this.props.meeting.StartDateTime)
     this.props.meeting.EndDateTime = handleTime(this.props.meeting.EndDateTime)
@@ -28,14 +28,15 @@ class ProductRow extends React.Component {
 }
 
 
-class ProductTable extends React.Component {
+class MeetingsTable extends React.Component {
   render() {
     var rows = [];
     this.props.meetings.forEach((meeting) => {
-      rows.push(<ProductRow meeting={meeting} key={meeting.Company} />);
+      rows.push(<MeetingRow meeting={meeting} key={meeting.Company} />);
     });
     return (
       <div className="container">
+      <h2 className="text-left">Dagens Møter</h2> <br></br>
       <table>
         <thead>
           <tr>
@@ -155,6 +156,6 @@ var PRODUCTS = [
 
 
 ReactDOM.render(
-  <ProductTable meetings={PRODUCTS} />,
+  <MeetingsTable meetings={PRODUCTS} />,
   document.getElementById('root')
 );
