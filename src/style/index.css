@@ -1,5 +1,24 @@
 body {
   margin: 0;
-  padding: 0;
+  padding: 10% 0;
   font-family: sans-serif;
+  background-color: mediumblue;
+  color: white;
+}
+
+
+table {
+  width: 100%;
+}
+
+th {
+  font-size: 3em;
+}
+
+td {
+  font-size: 1.5em;
+}
+
+th, td {
+  padding: 15px;
 }

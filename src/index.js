@@ -3,25 +3,44 @@ import ReactDOM from 'react-dom';
 //import App from './App';
 import './style/index.css';
 
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
 function handleTime(unix) {
   var newDate = new Date(unix.slice(6,16) * 1000);
-  var newtime = newDate.toUTCString();
-  return newtime
+  var h = addZero(newDate.getHours());
+  var m = addZero(newDate.getMinutes());
+  var time = h + ':' + m
+  return time
+}
+
+var rooms = {10: "Lars Tiller"};
+
+function handleRoomName(num) {
+  for (var i = 0; i < 10; ++i) {
+    if (rooms) {
+      return rooms[num];
+    }
+  }
 }
 
 class MeetingRow extends React.Component {
   render() {
     this.props.meeting.StartDateTime = handleTime(this.props.meeting.StartDateTime)
     this.props.meeting.EndDateTime = handleTime(this.props.meeting.EndDateTime)
+    this.props.meeting.TableNrs = handleRoomName(this.props.meeting.TableNrs)
+
     if (!this.props.meeting.Company)
       this.props.meeting.Company = this.props.meeting.CustomerName
     return (
       <tr>
         <td>{this.props.meeting.Company}</td>
-        <td>{this.props.meeting.StartDateTime}</td>
-        <td>{this.props.meeting.EndDateTime}</td>
-        <td></td>
-        <td>{this.props.meeting.TableNrs}</td>
+        <td className="text-center">{this.props.meeting.StartDateTime} - {this.props.meeting.EndDateTime}</td>
+        <td className="text-center">{this.props.meeting.TableNrs}</td>
       </tr>
     );
   }
@@ -36,14 +55,13 @@ class MeetingsTable extends React.Component {
     });
     return (
       <div className="container">
-      <h2 className="text-left">Dagens Møter</h2> <br></br>
+      <img className="pull-right" src={require('./style/smnlogo.png')}alt={"SMN LOGO"} width={"20%"}  />
       <table>
         <thead>
           <tr>
-            <th></th>
-            <th>Tidspunkt</th>
-            <th></th>
-            <th>Møterom</th>
+            <th>Møter i dag</th>
+            <th className="text-center">Tidspunkt</th>
+            <th className="text-center">Møterom</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -52,7 +70,6 @@ class MeetingsTable extends React.Component {
     );
   }
 }
-
 
 
 var PRODUCTS = [
@@ -149,7 +166,7 @@ var PRODUCTS = [
 "RestaurantName": "SpareBank 1",
 "StartDateTime": "/Date(1481612400000)/",
 "TableNrs": [
-13
+10
 ]
 }
 ]
