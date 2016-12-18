@@ -5,6 +5,7 @@ import './style/index.css';
 import meetings from './meetings.json';
 
 
+
 var rooms = {
   1: "Amfiet", 
   2: "Jacob roll", 
@@ -15,7 +16,6 @@ var rooms = {
   10: "Lars Tiller",
   13: "Fru Schøller"
 };
-
 
 function addZero(i) {
     if (i < 10) {
@@ -81,6 +81,10 @@ class MeetingsTable extends React.Component {
     );
   }
 }
+
+
+
+
 
 
 ReactDOM.render(
