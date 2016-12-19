@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 //import App from './App';
 import './style/index.css';
 import meetings from './meetings.json';
-
+import axios from 'axios';
 
 
 var rooms = {
@@ -16,6 +16,7 @@ var rooms = {
   10: "Lars Tiller",
   13: "Fru Schøller"
 };
+
 
 function addZero(i) {
     if (i < 10) {
@@ -58,9 +59,22 @@ class MeetingRow extends React.Component {
 
 
 class MeetingsTable extends React.Component {
+  constructor(props) {
+    super(props);
+  axios.get('https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-28')
+  .then(function (response) {
+    console.log(meetings);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+    this.state = {meetings: meetings};
+  }
+
   render() {
     var rows = [];
-    this.props.meetings.forEach((meeting) => {
+    this.state.meetings.forEach((meeting) => {
       if(meeting["TableNrs"] in rooms) {
               rows.unshift(<MeetingRow meeting={meeting} key={meeting.Company} />);
       }});
@@ -88,6 +102,6 @@ class MeetingsTable extends React.Component {
 
 
 ReactDOM.render(
-  <MeetingsTable meetings={meetings} />,
+  <MeetingsTable />,
   document.getElementById('root')
 );
