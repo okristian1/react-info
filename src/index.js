@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 //import App from './App';
 import './style/index.css';
-//import meetings from './meetings.json';
+import meetings from './meetings.json';
 
 
 
@@ -59,18 +59,11 @@ class MeetingRow extends React.Component {
 
 class MeetingsTable extends React.Component {
   render() {
-  fetch('https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-28')
-  .then(response => response.json())
-  .then(json => {
-    var data = ('parsed json', json)
-    console.log(data)
-  })
-
     var rows = [];
-    this.props.data.forEach(function(row) {
-      if(row["TableNrs"] in rooms) {
-              rows.unshift(<MeetingRow row={row} key={row.Company} />);
-    }});
+    this.props.meetings.forEach((meeting) => {
+      if(meeting["TableNrs"] in rooms) {
+              rows.unshift(<MeetingRow meeting={meeting} key={meeting.Company} />);
+      }});
     return (
       <div className="container">
       <img className="pull-right" src={require('./style/smnlogo.png')}alt={"SMN LOGO"} width={"30%"}  />
@@ -91,7 +84,10 @@ class MeetingsTable extends React.Component {
 
 
 
+
+
+
 ReactDOM.render(
-  <MeetingsTable />,
+  <MeetingsTable meetings={meetings} />,
   document.getElementById('root')
 );
