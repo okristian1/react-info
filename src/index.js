@@ -39,40 +39,27 @@ function handleRoomName(num) {
     return "ukjent";
   }
 
-class MeetingRow extends React.Component {
-  render() {
-    this.props.meeting.StartDateTime = handleTime(this.props.meeting.StartDateTime)
-    this.props.meeting.EndDateTime = handleTime(this.props.meeting.EndDateTime)
-    this.props.meeting.TableNrs = handleRoomName(this.props.meeting.TableNrs)
 
-    if (!this.props.meeting.Company)
-      this.props.meeting.Company = this.props.meeting.CustomerName
-    return (
-      <tr>
-        <td>{this.props.meeting.Company}</td>
-        <td className="text-center">{this.props.meeting.StartDateTime} - {this.props.meeting.EndDateTime}</td>
-        <td className="text-right">{this.props.meeting.TableNrs}</td>
-      </tr>
-    );
-  }
+function get2BookData(URL) {
+  axios.get('https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-28')
+  .then(function (response) {
+    console.log(response);
+    this.result(response);
+  }.bind(this))
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
 
 class MeetingsTable extends React.Component {
-  constructor(props) {
-    super(props);
-  axios.get('https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-28')
-  .then(function (response) {
-    console.log(meetings);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
-    this.state = {meetings: meetings};
-  }
-
   render() {
+    this.props.meeting.StartDateTime = handleTime(this.props.meeting.StartDateTime)
+    this.props.meeting.EndDateTime = handleTime(this.props.meeting.EndDateTime)
+    this.props.meeting.TableNrs = handleRoomName(this.props.meeting.TableNrs)
+    if (!this.props.meeting.Company)
+      this.props.meeting.Company = this.props.meeting.CustomerName
+
     var rows = [];
     this.state.meetings.forEach((meeting) => {
       if(meeting["TableNrs"] in rooms) {
@@ -89,7 +76,13 @@ class MeetingsTable extends React.Component {
             <th className="text-right">Sted</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+      <tr>
+        <td>{this.props.meeting.Company}</td>
+        <td className="text-center">{this.props.meeting.StartDateTime} - {this.props.meeting.EndDateTime}</td>
+        <td className="text-right">{this.props.meeting.TableNrs}</td>
+      </tr>
+        </tbody>
       </table>
       </div>
     );
@@ -102,6 +95,6 @@ class MeetingsTable extends React.Component {
 
 
 ReactDOM.render(
-  <MeetingsTable />,
+  <MeetingsTable meetings={meetings} />,
   document.getElementById('root')
 );
