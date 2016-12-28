@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import App from './App';
-import './style/index.css';
-import meetings from './meetings.json';
 import axios from 'axios';
+import './style/index.css';
+
 
 
 var rooms = {
@@ -16,7 +15,6 @@ var rooms = {
   10: "Lars Tiller",
   13: "Fru Schøller"
 };
-
 
 function addZero(i) {
     if (i < 10) {
@@ -40,50 +38,34 @@ function handleRoomName(num) {
   }
 
 
-function get2BookData(URL) {
-  axios.get('https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-28')
-  .then(function (response) {
-    console.log(response);
-    this.result(response);
-  }.bind(this))
-  .catch(function (error) {
-    console.log(error);
-  });
-}
 
+class Meetings extends React.Component {
+  constructor(props) {
+    super(props);
 
-class MeetingsTable extends React.Component {
+    this.state = {
+      meetings: []
+    };
+  }
+
+componentDidMount() {
+    axios.get(`https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-29`)
+      .then(result => {
+        console.log(result);
+        const meetings = result.data.map(obj => obj);
+        console.log(meetings);
+        this.setState({ meetings });
+      });
+  }
+
   render() {
-    this.props.meeting.StartDateTime = handleTime(this.props.meeting.StartDateTime)
-    this.props.meeting.EndDateTime = handleTime(this.props.meeting.EndDateTime)
-    this.props.meeting.TableNrs = handleRoomName(this.props.meeting.TableNrs)
-    if (!this.props.meeting.Company)
-      this.props.meeting.Company = this.props.meeting.CustomerName
-
-    var rows = [];
-    this.state.meetings.forEach((meeting) => {
-      if(meeting["TableNrs"] in rooms) {
-              rows.unshift(<MeetingRow meeting={meeting} key={meeting.Company} />);
-      }});
     return (
-      <div className="container">
-      <img className="pull-right" src={require('./style/smnlogo.png')}alt={"SMN LOGO"} width={"30%"}  />
-      <table>
-        <thead>
-          <tr>
-            <th>Møte</th>
-            <th className="text-center">Tidspunkt</th>
-            <th className="text-right">Sted</th>
-          </tr>
-        </thead>
-        <tbody>
-      <tr>
-        <td>{this.props.meeting.Company}</td>
-        <td className="text-center">{this.props.meeting.StartDateTime} - {this.props.meeting.EndDateTime}</td>
-        <td className="text-right">{this.props.meeting.TableNrs}</td>
-      </tr>
-        </tbody>
-      </table>
+      <div>
+        <ul>
+          {this.state.meetings.map(meeting =>
+            <tr key={meeting.TableNrs}>{meeting.Company}</tr>
+          )}
+        </ul>
       </div>
     );
   }
@@ -93,8 +75,7 @@ class MeetingsTable extends React.Component {
 
 
 
-
 ReactDOM.render(
-  <MeetingsTable meetings={meetings} />,
+  <Meetings />,
   document.getElementById('root')
 );
