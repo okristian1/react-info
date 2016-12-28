@@ -34,7 +34,6 @@ function handleRoomName(num) {
   if(num in rooms) {
     return rooms[num];
     }
-    return "ukjent";
   }
 
 
@@ -51,25 +50,24 @@ class Meetings extends React.Component {
 componentDidMount() {
     axios.get(`https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-29`)
       .then(result => {
-        console.log(result);
         const meetings = result.data.map(obj => obj);
-        console.log(meetings);
         this.setState({ meetings });
       });
   }
-
   render() {
     return (
       <div>
+        <img className="pull-right" src={require('./style/smnlogo.png')}alt={"SMN LOGO"} width={"30%"}  />
         <table>
         <tbody>
+        <td>Møte</td>
+        <td>Møterom</td>
+        <td>Tidspunkt</td>
           {this.state.meetings.map(meeting =>
             <tr key={meeting.TableNrs}>
             <td>{meeting.Company}</td>
-            <td>{meeting.TableNrs}</td>
-            <td>{meeting.StartDateTime}</td>
-            <td>{meeting.EndDateTime}</td>
-            </tr>
+            <td>{handleRoomName(meeting.TableNrs)}</td>
+            <td>{handleTime(meeting.StartDateTime)} - {handleTime(meeting.EndDateTime)}</td>            </tr>
           )}
           </tbody>
         </table>
