@@ -61,11 +61,18 @@ componentDidMount() {
   render() {
     return (
       <div>
-        <ul>
+        <table>
+        <tbody>
           {this.state.meetings.map(meeting =>
-            <tr key={meeting.TableNrs}>{meeting.Company}</tr>
+            <tr key={meeting.TableNrs}>
+            <td>{meeting.Company}</td>
+            <td>{meeting.TableNrs}</td>
+            <td>{meeting.StartDateTime}</td>
+            <td>{meeting.EndDateTime}</td>
+            </tr>
           )}
-        </ul>
+          </tbody>
+        </table>
       </div>
     );
   }
