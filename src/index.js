@@ -51,12 +51,9 @@ componentDidMount() {
            if(meeting["TableNrs"]in rooms) {
              temp.unshift(meeting);
              this.setState({ meetings: temp})
-
            }
          })
-/*        const meetings = result.data.map(obj => obj);
-        this.setState({ meetings });
-*/      });
+      });
   }
   render() {
     return (
@@ -71,9 +68,10 @@ componentDidMount() {
         </tr>
           {this.state.meetings.map(meeting =>
             <tr key={meeting.TableNrs}>
-            <td>{meeting.Company}</td>
+            <td>{meeting.Company ? meeting.Company : meeting.CustomerName}</td>
             <td>{handleRoomName(meeting.TableNrs)}</td>
-            <td>{handleTime(meeting.StartDateTime)} - {handleTime(meeting.EndDateTime)}</td>            </tr>
+            <td>{handleTime(meeting.StartDateTime)} - {handleTime(meeting.EndDateTime)}</td>
+            </tr>
           )}
           </tbody>
         </table>
