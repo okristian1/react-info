@@ -36,23 +36,27 @@ function handleRoomName(num) {
     }
   }
 
-
-
 class Meetings extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       meetings: []
     };
   }
-
 componentDidMount() {
+  var temp = [];
     axios.get(`https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-29`)
       .then(result => {
-        const meetings = result.data.map(obj => obj);
+         result.data.forEach((meeting) => {
+           if(meeting["TableNrs"]in rooms) {
+             temp.unshift(meeting);
+             this.setState({ meetings: temp})
+
+           }
+         })
+/*        const meetings = result.data.map(obj => obj);
         this.setState({ meetings });
-      });
+*/      });
   }
   render() {
     return (
@@ -60,9 +64,11 @@ componentDidMount() {
         <img className="pull-right" src={require('./style/smnlogo.png')}alt={"SMN LOGO"} width={"30%"}  />
         <table>
         <tbody>
+        <tr>
         <td>Møte</td>
         <td>Møterom</td>
         <td>Tidspunkt</td>
+        </tr>
           {this.state.meetings.map(meeting =>
             <tr key={meeting.TableNrs}>
             <td>{meeting.Company}</td>
