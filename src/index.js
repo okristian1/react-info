@@ -44,8 +44,22 @@ class Meetings extends React.Component {
     };
   }
 componentDidMount() {
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+
+if(dd<10) {
+    dd='0'+dd
+} 
+
+if(mm<10) {
+    mm='0'+mm
+} 
+
+today = yyyy+'-'+mm+'-'+dd;
   var temp = [];
-    axios.get(`https://sparbank1.2book.se/Version4_49_18/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=2016-11-29`)
+    axios.get(`https://sparbank1.2book.se/Version4_51_9/simpleIntegration/GetCreaJson?RestaurantId=4&dateTime=` + today)
       .then(result => {
          result.data.forEach((meeting) => {
            if(meeting["TableNrs"]in rooms) {
@@ -88,3 +102,5 @@ ReactDOM.render(
   <Meetings />,
   document.getElementById('root')
 );
+
+setInterval(componentDidMount, 1000);
